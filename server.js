@@ -9,12 +9,18 @@ app.use(express.json());
 
 const db = mysql.createConnection(
     {
-      host: 'localhost:3306',
-      // MySQL username,
+      host: 'localhost',
       user: 'root',
-      // MySQL password
       password: 'Maia123!',
       database: 'company_db'
     },
-    console.log(`Connected to the classlist_db database.`)
+    console.log(`Connected to the company_db database.`)
   );
+
+  db.query('SELECT * FROM company_db.department;', function (err, results) {
+    console.log(results);
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
