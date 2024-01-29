@@ -1,4 +1,5 @@
 const express = require('express');
+const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
 const PORT = process.env.PORT || 3001;
@@ -15,12 +16,20 @@ const db = mysql.createConnection(
       database: 'company_db'
     },
     console.log(`Connected to the company_db database.`)
-  );
+);
 
-  db.query('SELECT * FROM company_db.department;', function (err, results) {
-    console.log(results);
-  });
-
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+inquirer
+  .prompt({
+    type: 'list',
+    message: 'What would you like to do?',
+    name: 'options',
+    choices: [
+        'View all departments',
+        'View all roles',
+        'View all employees',
+        'Add a department',
+        'Add a role',
+        'Add an employee',
+        'Update an employee role'
+    ],
   });
