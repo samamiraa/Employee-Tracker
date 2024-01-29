@@ -38,6 +38,8 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 
 https://www.w3schools.com/sql/sql_update.asp
 https://www.w3schools.com/sql/sql_datatypes.asp
+https://www.w3schools.com/js/js_errors.asp
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch
 
 ## License
 
