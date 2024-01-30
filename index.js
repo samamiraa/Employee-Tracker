@@ -2,8 +2,8 @@ const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const cTable = require('console.table');
 
-const db = require('./assets/db');
-const departmentJs = require('./classes/department.js');
+const db = require('./assets/server.js');
+const Department = require('./classes/department.js');
 const employeeJs = require('./classes/employee.js');
 const rolesJs = require('./classes/roles.js');
 
@@ -32,7 +32,7 @@ function inquirerprompt() {
       })
       .then((data) => {
         if (data.options === 'View all departments') {
-            departmentJs.viewDepartments();
+            Department.viewDepartments();
         } else if (data.options === 'View all roles') {
             viewRoles();
         } else if (data.options === 'View all employees') {

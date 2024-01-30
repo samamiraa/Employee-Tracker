@@ -1,13 +1,15 @@
-const mysql = require('mysql2');
-const cTable = require('console.table');
-const db = require('./assets/server');
+class Department {
+    constructor() {}
 
-function viewDepartments() {
-    db.query('SELECT * FROM department', function (err, results) {
-        console.table(results);
-    });
+    viewDepartments() {
+        db.query('SELECT * FROM department', function (err, results) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.table(results);
+        });
+    };
 };
 
-module.exports = {
-    viewDepartments
-};
+module.exports = Department;
