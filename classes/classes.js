@@ -26,12 +26,16 @@ class Roles {
     constructor() {};
 
     viewRoles() {
-        db.query('SELECT * FROM role', function (err, results) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.table(results);
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM role', function (err, results) {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                console.table(results);
+                resolve(results);
+                };
+            });
         });
     };
 };
@@ -40,12 +44,16 @@ class Employee {
     constructor() {};
 
     viewEmployees() {
-        db.query('SELECT * FROM employee', function (err, results) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.table(results);
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM employee', function (err, results) {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                console.table(results);
+                resolve(results);
+                };
+            });
         });
     };
 };

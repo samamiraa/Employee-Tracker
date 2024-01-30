@@ -21,7 +21,6 @@ Provide a short description explaining the what, why, and how of your project. U
 ## Installation
 
 NPM install inquirer@8.2.4<br>
-NPM install express<br>
 NPM install mysql2<br>
 
 ## Usage
@@ -41,6 +40,7 @@ https://www.w3schools.com/sql/sql_datatypes.asp
 https://www.w3schools.com/js/js_errors.asp
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch
 https://stackoverflow.com/questions/5266152/how-to-exit-in-node-js
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 ## License
 
