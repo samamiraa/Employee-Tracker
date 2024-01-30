@@ -40,6 +40,7 @@ https://www.w3schools.com/sql/sql_update.asp
 https://www.w3schools.com/sql/sql_datatypes.asp
 https://www.w3schools.com/js/js_errors.asp
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch
+https://stackoverflow.com/questions/5266152/how-to-exit-in-node-js
 
 ## License
 
