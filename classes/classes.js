@@ -20,14 +20,20 @@ class Department {
             });
         });
     };
+
+    addDepartment() {
+        return new Promise((resolve, reject) => {
+            db.query()
+        })
+    }
 };
 
-class Roles {
+class Role {
     constructor() {};
 
     viewRoles() {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM role', function (err, results) {
+            db.query('SELECT role.roleId, role.title, role.salary FROM role RIGHT JOIN department ON role.department_id = department.departmentId', function (err, results) {
                 if (err) {
                     console.error(err);
                     reject(err);
@@ -58,4 +64,4 @@ class Employee {
     };
 };
 
-module.exports = { Department, Roles, Employee };
+module.exports = { Department, Role, Employee };

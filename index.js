@@ -3,10 +3,10 @@ const mysql = require('mysql2');
 const cTable = require('console.table');
 
 const db = require('./assets/server.js');
-const {Department, Roles, Employee} = require('./classes/classes.js')
+const {Department, Role, Employee} = require('./classes/classes.js')
 
 let department = new Department;
-let roles = new Roles;
+let role = new Role;
 let employee = new Employee;
 
 const listOptions = [
@@ -38,7 +38,7 @@ function initializeApp() {
             if (data.options === 'View all departments') {
                 return department.viewDepartments();
             } else if (data.options === 'View all roles') {
-                return roles.viewRoles();
+                return role.viewRoles();
             } else if (data.options === 'View all employees') {
                 return employee.viewEmployees();
             } else if(data.options === 'Add a department') {

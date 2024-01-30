@@ -1,11 +1,11 @@
-INSERT INTO department (id, name)
+INSERT INTO department (departmentId, name)
 VALUES  (1, "Sales"),
         (2, "Deli"),
         (3, "Produce"),
         (4, "Bakery"),
         (5, "Meat");
 
-INSERT INTO role (id, title, salary, department_id)
+INSERT INTO role (roleId, title, salary, departmentId)
 VALUES  (1, "Cashier", 30000.00, 1),
         (2, "Sales Department Manager", 50000.00, 1),
         (3, "Deli Food Service Assistant", 30000.00, 2),
@@ -18,7 +18,7 @@ VALUES  (1, "Cashier", 30000.00, 1),
         (10, "Butcher", 40000.00, 5),
         (11, "Meat Departmente Manager", 50000.00, 5);
 
-INSERT INTO employee (id, first_name, last_name, role_id)
+INSERT INTO employee (employeeId, first_name, last_name, roleId)
 VALUES  (1, "Ricardo", "Larkin", 1),
         (2, "Courtney", "Powlowski", 1),
         (3, "Rex", "Mohr", 1),
@@ -43,45 +43,45 @@ VALUES  (1, "Ricardo", "Larkin", 1),
         (22, "Levi", "Ankunding", 11);
 
 UPDATE employee
-SET manager_id = 4
-WHERE role_id = 1;
+SET managerId = 4
+WHERE roleId = 1;
 
 UPDATE employee
-SET manager_id = 10
-WHERE role_id = 3;
+SET managerId = 10
+WHERE roleId = 3;
 
 UPDATE employee
-SET manager_id = 10
-WHERE role_id = 4;
+SET managerId = 10
+WHERE roleId = 4;
 
 UPDATE employee
-SET manager_id = 14
-WHERE role_id = 6;
+SET managerId = 14
+WHERE roleId = 6;
 
 UPDATE employee
-SET manager_id = 18
-WHERE role_id = 8;
+SET managerId = 18
+WHERE roleId = 8;
 
 UPDATE employee
-SET manager_id = 22
-WHERE role_id = 10;
+SET managerId = 22
+WHERE roleId = 10;
 
 UPDATE employee
-SET manager_id = NULL
-WHERE id = 4;
-
-UPDATE employee
-SET manager_id = NULL
-WHERE id = 10;
+SET managerId = NULL
+WHERE employeeId = 4;
 
 UPDATE employee
 SET manager_id = NULL
-WHERE id = 14;
+WHERE employeeId = 10;
 
 UPDATE employee
 SET manager_id = NULL
-WHERE id = 18;
+WHERE employeeId = 14;
 
 UPDATE employee
 SET manager_id = NULL
-WHERE id = 22;
+WHERE employeeId = 18;
+
+UPDATE employee
+SET manager_id = NULL
+WHERE employeeId = 22;
