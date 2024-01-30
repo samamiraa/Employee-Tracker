@@ -4,8 +4,25 @@ const cTable = require('console.table');
 
 const db = require('./assets/server.js');
 const Department = require('./classes/department.js');
-const employeeJs = require('./classes/employee.js');
-const rolesJs = require('./classes/roles.js');
+const Employee = require('./classes/employee.js');
+const Roles = require('./classes/roles.js');
+
+const listOptions = [
+    'View all departments',
+    'View all roles',
+    'View all employees',
+    'Add a department',
+    'Add a role',
+    'Add an employee',
+    'Update an employee role',
+    'Update employee manager',
+    'View employees by manager',
+    'View employees by department',
+    'Delete a role',
+    'Delete a department',
+    'Delete an employee',
+    'Exit'
+];
 
 function inquirerprompt() {
     inquirer
@@ -13,30 +30,18 @@ function inquirerprompt() {
         type: 'list',
         message: 'What would you like to do?',
         name: 'options',
-        choices: [
-            'View all departments',
-            'View all roles',
-            'View all employees',
-            'Add a department',
-            'Add a role',
-            'Add an employee',
-            'Update an employee role',
-            'Update employee manager',
-            'View employees by manager',
-            'View employees by department',
-            'Delete a role',
-            'Delete a department',
-            'Delete an employee',
-            'Exit'
-        ],
+        choices: listOptions,
       })
       .then((data) => {
         if (data.options === 'View all departments') {
-            Department.viewDepartments();
+            let viewDepartments = new Department;
+            viewDepartments.viewDepartments();
         } else if (data.options === 'View all roles') {
-            viewRoles();
+            let viewRoles = new Roles;
+            viewRoles.viewRoles();
         } else if (data.options === 'View all employees') {
-            viewEmployees();
+            let viewEmployees = new Employee;
+            viewEmployees.viewEmployees();
         } else if(data.options === 'Add a department') {
             addDepartment();
         } else if (data.options === 'Add a role') {

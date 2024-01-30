@@ -1,3 +1,7 @@
+const db = require('../assets/server.js');
+const mysql = require('mysql2');
+const cTable = require('console.table');
+
 class Department {
     constructor() {}
 
