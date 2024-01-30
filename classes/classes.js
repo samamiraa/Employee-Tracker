@@ -33,13 +33,18 @@ class Role {
 
     viewRoles() {
         return new Promise((resolve, reject) => {
-            db.query('SELECT role.roleId, role.title, role.salary FROM role RIGHT JOIN department ON role.department_id = department.departmentId', function (err, results) {
+            const query = `
+                SELECT role.roleId, role.roleTitle, role.roleSalary, department.departmentName
+                FROM role
+                INNER JOIN department ON role.departmentId = department.departmentId;
+            `
+            db.query(query, function (err, results) {
                 if (err) {
                     console.error(err);
                     reject(err);
                 } else {
-                console.table(results);
-                resolve(results);
+                    console.table(results);
+                    resolve(results);
                 };
             });
         });
@@ -51,7 +56,12 @@ class Employee {
 
     viewEmployees() {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM employee', function (err, results) {
+            const query = `
+                SELECT employee.employeeId, employee.firstName, employee.lastName, role.roleTitle, role.roleSalary
+                FROM employee
+                INNER JOIN role ON employee.roleId = role.roleId;
+            `
+            db.query(query, function (err, results) {
                 if (err) {
                     console.error(err);
                     reject(err);

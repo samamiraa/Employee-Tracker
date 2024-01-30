@@ -5,14 +5,14 @@ USE company_db;
 
 CREATE TABLE department (
     departmentId INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
+    departmentName VARCHAR(30) NOT NULL,
     PRIMARY KEY(departmentId)
 );
 
 CREATE TABLE role (
     roleId INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(30) NOT NULL,
-    salary DECIMAL NOT NULL,
+    roleTitle VARCHAR(30) NOT NULL,
+    roleSalary DECIMAL NOT NULL,
     departmentId int NOT NULL,
     PRIMARY KEY(roleId),
     FOREIGN KEY (departmentId) REFERENCES department(departmentId)
@@ -20,8 +20,8 @@ CREATE TABLE role (
 
 CREATE TABLE  employee (
     employeeId INT NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
+    firstName VARCHAR(30) NOT NULL,
+    lastName VARCHAR(30) NOT NULL,
     roleId INT NOT NULL,
     managerId INT,
     PRIMARY KEY(employeeId),

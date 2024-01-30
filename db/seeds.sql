@@ -1,11 +1,11 @@
-INSERT INTO department (departmentId, name)
+INSERT INTO department (departmentId, departmentName)
 VALUES  (1, "Sales"),
         (2, "Deli"),
         (3, "Produce"),
         (4, "Bakery"),
         (5, "Meat");
 
-INSERT INTO role (roleId, title, salary, departmentId)
+INSERT INTO role (roleId, roleTitle, roleSalary, departmentId)
 VALUES  (1, "Cashier", 30000.00, 1),
         (2, "Sales Department Manager", 50000.00, 1),
         (3, "Deli Food Service Assistant", 30000.00, 2),
@@ -18,7 +18,7 @@ VALUES  (1, "Cashier", 30000.00, 1),
         (10, "Butcher", 40000.00, 5),
         (11, "Meat Departmente Manager", 50000.00, 5);
 
-INSERT INTO employee (employeeId, first_name, last_name, roleId)
+INSERT INTO employee (employeeId, firstName, lastName, roleId)
 VALUES  (1, "Ricardo", "Larkin", 1),
         (2, "Courtney", "Powlowski", 1),
         (3, "Rex", "Mohr", 1),
@@ -71,17 +71,17 @@ SET managerId = NULL
 WHERE employeeId = 4;
 
 UPDATE employee
-SET manager_id = NULL
+SET managerId = NULL
 WHERE employeeId = 10;
 
 UPDATE employee
-SET manager_id = NULL
+SET managerId = NULL
 WHERE employeeId = 14;
 
 UPDATE employee
-SET manager_id = NULL
+SET managerId = NULL
 WHERE employeeId = 18;
 
 UPDATE employee
-SET manager_id = NULL
+SET managerId = NULL
 WHERE employeeId = 22;
