@@ -26,7 +26,7 @@ class Role {
         });
     };
 
-    async addRole() {
+    addRole() {
         return new Promise((resolve, reject) => {
             const departmentQuery = `
                 SELECT departmentName
