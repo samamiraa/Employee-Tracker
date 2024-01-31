@@ -22,6 +22,7 @@ Provide a short description explaining the what, why, and how of your project. U
 
 NPM install inquirer@8.2.4<br>
 NPM install mysql2<br>
+NPM install validator
 
 ## Usage
 

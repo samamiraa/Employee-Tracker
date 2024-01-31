@@ -44,7 +44,7 @@ function initializeApp() {
             } else if(data.options === 'Add a department') {
                 return department.addDepartment();
             } else if (data.options === 'Add a role') {
-                addRole();
+                return role.addRole();
             } else if (data.options === 'Add an employee') {
                 addEmployee();
             } else if (data.options === 'Update an employee role') {

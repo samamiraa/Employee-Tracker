@@ -25,7 +25,7 @@ class Department {
         return new Promise((resolve, reject) => {
             inquirer.prompt({
                 type: 'input',
-                message: 'What is the name of the department?',
+                message: 'What is the name of the department you would like to create?',
                 name: 'department',
             }) 
             .then((data) => {
@@ -44,7 +44,7 @@ class Department {
                 })
             })
         })
-    }
+    };
 };
 
 class Role {
@@ -65,6 +65,43 @@ class Role {
                     console.table(results);
                     resolve(results);
                 };
+            });
+        });
+    };
+
+    addRole() {
+        return new Promise((resolve, reject) => {
+            inquirer.prompt([
+                {
+                type: 'input',
+                message: 'What is the title of the role you would like to create?',
+                name: 'roleTitle',
+                },
+                {
+                type: 'input',
+                message: 'What is the annual salary of this new role?',
+                name: 'roleSalary',    
+                },
+                {
+                type: 'input',
+                message: 'What is the departmentId for this role?',
+                name: 'departmentId',    
+                },
+            ]) 
+            .then((data) => {
+                const query = `
+                INSERT INTO role (roleTitle, roleSalary, departmentId)
+                VALUES ("${data.roleTitle}", "${data.roleSalary}", "${data.departmentId}")
+                `
+                db.query(query, function (err, results) {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                    } else {
+                        console.log(`${data.roleTitle} has been successfully added!`);
+                        resolve(results);
+                    };
+                });
             });
         });
     };
