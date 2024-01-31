@@ -26,12 +26,12 @@ class Role {
         });
     };
 
-    addRole() {
+    async addRole() {
         return new Promise((resolve, reject) => {
             const departmentQuery = `
                 SELECT departmentName
                 FROM department
-            `
+            `;
 
             db.query(departmentQuery, function(err, results) {
                 if (err) {
@@ -59,27 +59,27 @@ class Role {
                     ]) 
                     .then((data) => {
                         const departmentIdQuery = `
-                        SELECT departmentId
-                        FROM department
-                        WHERE departmentName = '${data.department}
-                        `
+                            SELECT departmentId
+                            FROM department
+                            WHERE departmentName = '${data.department}
+                            `;
                         return db.query(departmentIdQuery);
                     })
-                    .then((data) => {
+                    .then((departmentData) => {
                         const addRoleQuery = `
-                        INSERT INTO role (roleTitle, roleSalary, departmentId)
-                        VALUES ("${data.roleTitle}", "${data.roleSalary}", "${data.departmentIdQuery}")
-                        `
-                        db.query(addRoleQuery, function (err, results) {
-                            if (err) {
-                                console.error(err);
-                                reject(err);
-                            } else {
-                                console.log(`${data.roleTitle} has been successfully added!`);
-                                resolve(results);
-                            };
-                        });
-                    });
+                            INSERT INTO role (roleTitle, roleSalary, departmentId)
+                            VALUES ("${data.roleTitle}", "${data.roleSalary}", "${departmentData[0].departmentId}")
+                            `;
+                        return db.query(addRoleQuery)
+                    })
+                    .then(() => {
+                        console.log(`${roleTitle} has been successfully added!`)
+                        resolve(results);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        reject(err);
+                    })
                 }
             });
         });
