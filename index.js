@@ -3,7 +3,9 @@ const mysql = require('mysql2');
 const cTable = require('console.table');
 
 const db = require('./assets/server.js');
-const {Department, Role, Employee} = require('./classes/classes.js')
+const Department = require('./classes/department.js');
+const Employee = require('./classes/employee.js');
+const Role = require('./classes/role.js');
 
 let department = new Department;
 let role = new Role;

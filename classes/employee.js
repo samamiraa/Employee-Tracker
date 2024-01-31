@@ -4,113 +4,10 @@ const cTable = require('console.table');
 const inquirer = require('inquirer');
 const validator = require('validator');
 
-
-class Department {
-    constructor() {};
-
-    viewDepartments() {
-        return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM department', function (err, results) {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    console.table(results);
-                    resolve(results);
-                };
-            });
-        });
-    };
-
-    addDepartment() {
-        return new Promise((resolve, reject) => {
-            inquirer.prompt({
-                type: 'input',
-                message: 'What is the name of the department you would like to create?',
-                name: 'department',
-            }) 
-            .then((data) => {
-                const query = `
-                INSERT INTO department (departmentName)
-                VALUES ("${data.department}")
-                `
-                db.query(query, function (err, results) {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        console.log(`${data.department} has been successfully added!`);
-                        resolve(results);
-                    };
-                })
-            })
-        })
-    };
-};
-
-class Role {
-    constructor() {};
-
-    viewRoles() {
-        return new Promise((resolve, reject) => {
-            const query = `
-                SELECT role.roleId, role.roleTitle, role.roleSalary, department.departmentName
-                FROM role
-                INNER JOIN department ON role.departmentId = department.departmentId;
-            `
-            db.query(query, function (err, results) {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    console.table(results);
-                    resolve(results);
-                };
-            });
-        });
-    };
-
-    addRole() {
-        return new Promise((resolve, reject) => {
-            inquirer.prompt([
-                {
-                type: 'input',
-                message: 'What is the title of the role you would like to create?',
-                name: 'roleTitle',
-                },
-                {
-                type: 'input',
-                message: 'What is the annual salary of this new role?',
-                name: 'roleSalary',    
-                },
-                {
-                type: 'input',
-                message: 'What is the departmentId for this role?',
-                name: 'departmentId',    
-                },
-            ]) 
-            .then((data) => {
-                const query = `
-                INSERT INTO role (roleTitle, roleSalary, departmentId)
-                VALUES ("${data.roleTitle}", "${data.roleSalary}", "${data.departmentId}")
-                `
-                db.query(query, function (err, results) {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        console.log(`${data.roleTitle} has been successfully added!`);
-                        resolve(results);
-                    };
-                });
-            });
-        });
-    };
-};
-
 class Employee {
     constructor() {};
 
+    // need to include manager
     viewEmployees() {
         return new Promise((resolve, reject) => {
             const query = `
@@ -130,6 +27,7 @@ class Employee {
         });
     };
 
+    //!need to change role to list
     addEmployee() {
         return new Promise((resolve, reject) => {
             inquirer.prompt([
@@ -167,6 +65,7 @@ class Employee {
         });
     };
 
+    //!need to fix
     updateEmployeeRole() {
         return new Promise((resolve, reject) => {
             let employeeNames = `
@@ -223,4 +122,4 @@ class Employee {
     }
 };
 
-module.exports = { Department, Role, Employee };
+module.exports = Employee;
