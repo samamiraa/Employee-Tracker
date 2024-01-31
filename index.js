@@ -48,7 +48,7 @@ function initializeApp() {
             } else if (data.options === 'Add an employee') {
                 return employee.addEmployee();
             } else if (data.options === 'Update an employee role') {
-                updateEmployeeRole();
+                return employee.updateEmployeeRole();
             } else if (data.options === 'Update employee manager') {
                 updateEmployeeManager();
             } else if (data.options === 'View employees by manager') {

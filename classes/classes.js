@@ -166,6 +166,42 @@ class Employee {
             });
         });
     };
+
+    updateEmployeeRole() {
+        return new Promise((resolve, reject) => {
+            inquirer.prompt([
+                {
+                type: 'input',
+                message: 'What is the last mame of the employee?',
+                name: 'lastName',
+                },
+                {
+                type: 'input',
+                message: 'What is the new roleId for this employee?',
+                name: 'roleId',    
+                },
+            ]) 
+            .then((data) => {
+                const query = `
+                UPDATE employee 
+                SET roleId = ${data.roleId}
+                WHERE lastName = "${data.lastName}";
+                `
+                db.query(query, function (err, results) {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                    } else {
+                        console.log(`${data.lastName} role has been successfully updated!`);
+                        resolve(results);
+                    };
+                });
+            })
+            .then(() => {
+                this.viewEmployees();
+            });
+        });
+    }
 };
 
 module.exports = { Department, Role, Employee };
