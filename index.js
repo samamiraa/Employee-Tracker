@@ -46,7 +46,7 @@ function initializeApp() {
             } else if (data.options === 'Add a role') {
                 return role.addRole();
             } else if (data.options === 'Add an employee') {
-                addEmployee();
+                return employee.addEmployee();
             } else if (data.options === 'Update an employee role') {
                 updateEmployeeRole();
             } else if (data.options === 'Update employee manager') {
@@ -62,7 +62,8 @@ function initializeApp() {
             } else if (data.options === 'Delete an employee') {
                 deleteEmployee();
             } else {
-                return;
+                console.log('Diconnected from database');
+                process.exit();
             };
         })
         .then(() => {

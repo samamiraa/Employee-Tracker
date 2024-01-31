@@ -2,6 +2,7 @@ const db = require('../assets/server.js');
 const mysql = require('mysql2');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
+const validator = require('validator');
 
 
 class Department {
@@ -125,6 +126,43 @@ class Employee {
                 console.table(results);
                 resolve(results);
                 };
+            });
+        });
+    };
+
+    addEmployee() {
+        return new Promise((resolve, reject) => {
+            inquirer.prompt([
+                {
+                type: 'input',
+                message: 'What is the first name of the new employee?',
+                name: 'firstName',
+                },
+                {
+                type: 'input',
+                message: 'What is the last name of the new employee?',
+                name: 'lastName',    
+                },
+                {
+                type: 'input',
+                message: 'What is the roleId for this employee?',
+                name: 'roleId',    
+                },
+            ]) 
+            .then((data) => {
+                const query = `
+                INSERT INTO employee (firstName, lastName, roleId)
+                VALUES ("${data.firstName}", "${data.lastName}", "${data.roleId}")
+                `
+                db.query(query, function (err, results) {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                    } else {
+                        console.log(`${data.firstName} ${data.lastName} has been successfully added!`);
+                        resolve(results);
+                    };
+                });
             });
         });
     };
