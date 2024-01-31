@@ -42,7 +42,7 @@ function initializeApp() {
             } else if (data.options === 'View all employees') {
                 return employee.viewEmployees();
             } else if(data.options === 'Add a department') {
-                addDepartment();
+                return department.addDepartment();
             } else if (data.options === 'Add a role') {
                 addRole();
             } else if (data.options === 'Add an employee') {

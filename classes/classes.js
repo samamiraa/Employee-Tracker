@@ -23,7 +23,26 @@ class Department {
 
     addDepartment() {
         return new Promise((resolve, reject) => {
-            db.query()
+            inquirer.prompt({
+                type: 'input',
+                message: 'What is the name of the department?',
+                name: 'department',
+            }) 
+            .then((data) => {
+                const query = `
+                INSERT INTO department (departmentName)
+                VALUES ("${data.department}")
+                `
+                db.query(query, function (err, results) {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                    } else {
+                        console.log(`${data.department} has been successfully added!`);
+                        resolve(results);
+                    };
+                })
+            })
         })
     }
 };
