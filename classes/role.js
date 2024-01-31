@@ -34,9 +34,8 @@ class Role {
             `;
 
             const departmentNames = await db.promise().query(departmentQuery);
-            const departmentChoices = departmentNames.map((department) => `${department.departmentName}`);
 
-            const data = await inquirer.prompt([
+            await inquirer.prompt([
                 {
                 type: 'input',
                 message: 'What is the title of the role you would like to create?',
@@ -51,14 +50,14 @@ class Role {
                 type: 'list',
                 message: 'What department does this role belong to?',
                 name: 'department',
-                choices: departmentChoices,  
+                choices: departmentNames,  
                 },
             ]);
             
             const departmentIdQuery = `
             SELECT departmentId
             FROM department
-            WHERE departmentName = '${data.department}'
+            WHERE departmentName = '${departmentChoices.departmentName}'
             `;
 
             const departmentData = await db.promise().query(departmentIdQuery);
@@ -68,7 +67,7 @@ class Role {
                 `;
 
             await db.promise().query(addRoleQuery);
-            console.log(`${roleTitle} has been successfully added!`)
+            console.log(`${data.roleTitle} has been successfully added!`)
 
         } catch (err) {
             console.error(err);
