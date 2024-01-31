@@ -169,37 +169,56 @@ class Employee {
 
     updateEmployeeRole() {
         return new Promise((resolve, reject) => {
-            inquirer.prompt([
-                {
-                type: 'input',
-                message: 'What is the last mame of the employee?',
-                name: 'lastName',
-                },
-                {
-                type: 'input',
-                message: 'What is the new roleId for this employee?',
-                name: 'roleId',    
-                },
-            ]) 
-            .then((data) => {
-                const query = `
-                UPDATE employee 
-                SET roleId = ${data.roleId}
-                WHERE lastName = "${data.lastName}";
-                `
-                db.query(query, function (err, results) {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        console.log(`${data.lastName} role has been successfully updated!`);
-                        resolve(results);
-                    };
-                });
+            let employeeNames = `
+                SELECT firstName, lastName
+                FROM employee
+            `;
+
+            let roleTitles = `
+                SELECT roleTitle
+                FROM role
+            `
+            db.query(employeeNames, function(err, results) {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+
+                    let employeeChoices = results.map(employee => `${employee.firstName} ${employee.lastName}`);
+                    let roleChoices = results.map(role => `${role.roleTitle}`);
+
+                    inquirer.prompt([
+                        {
+                        type: 'list',
+                        message: 'Which employee is switching roles?',
+                        name: 'names',
+                        choices: employeeChoices,
+                        },
+                        {
+                        type: 'list',
+                        message: 'What is the new role for this employee?',
+                        name: 'role',    
+                        choices: roleChoices,
+                        },
+                    ]) 
+                    .then((data) => {
+                        const query = `
+                        UPDATE employee 
+                        SET roleId = ${data.roleId}
+                        WHERE lastName = "${data.lastName}";
+                        `
+                        db.query(query, function (err, results) {
+                            if (err) {
+                                console.error(err);
+                                reject(err);
+                            } else {
+                                console.log(`${data.lastName} role has been successfully updated!`);
+                                resolve(results);
+                            };
+                        });
+                    })
+                };
             })
-            .then(() => {
-                this.viewEmployees();
-            });
         });
     }
 };
