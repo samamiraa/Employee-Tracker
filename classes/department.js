@@ -89,6 +89,48 @@ class Department {
                 reject(err);
             });
         });
+    };
+
+    deleteDepartment() {
+        return new Promise ((resolve, reject) => {
+            let departments;
+
+            const departmentsQuery = `
+                SELECT departmentName AS name, departmentId AS value
+                FROM department
+            `;
+
+            return db.promise().query(departmentsQuery)
+            .then((departmentsResult) => {
+                departments = departmentsResult[0];
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which department would you like to delete?',
+                    name: 'departments',    
+                    choices: departments,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    DELETE FROM department
+                    WHERE departmentId = ${data.departments}
+                `;
+
+                return db.promise().query(query);
+            })
+            .then(() => {
+                console.log('Department successfully deleted!')
+                resolve();
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            });
+        });
     }
 };
 

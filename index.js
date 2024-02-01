@@ -60,7 +60,7 @@ function initializeDatabase() {
             } else if (data.options === 'Delete a role') {
                 return role.deleteRole();
             } else if (data.options === 'Delete a department') {
-                deleteDepartment();
+                return department.deleteDepartment();
             } else if (data.options === 'Delete an employee') {
                 deleteEmployee();
             } else {
