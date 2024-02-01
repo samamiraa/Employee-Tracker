@@ -7,7 +7,7 @@ const validator = require('validator');
 class Employee {
     constructor() {};
 
-    // need to include manager
+    //! not getting all employees
     viewEmployees() {
         return new Promise((resolve, reject) => {
             const query = `
@@ -29,40 +29,63 @@ class Employee {
         });
     };
 
-    //!need to change role to list
+    //!need to add who employee manager is 
     addEmployee() {
         return new Promise((resolve, reject) => {
-            inquirer.prompt([
-                {
-                type: 'input',
-                message: 'What is the first name of the new employee?',
-                name: 'firstName',
-                },
-                {
-                type: 'input',
-                message: 'What is the last name of the new employee?',
-                name: 'lastName',    
-                },
-                {
-                type: 'input',
-                message: 'What is the roleId for this employee?',
-                name: 'roleId',    
-                },
-            ]) 
+            const roleQuery = `
+                SELECT roleTitle AS name, roleId AS value
+                FROM role
+            `
+
+            const rmanagerQuery = `
+            SELECT roleTitle AS name, roleId AS value
+            FROM role
+        `
+        return db.promise().query(roleQuery)
+            .then(roles => {
+            console.log(roles);
+
+            return inquirer
+                .prompt([
+                    {
+                    type: 'input',
+                    message: 'What is the first name of the new employee?',
+                    name: 'firstName',
+                    },
+                    {
+                    type: 'input',
+                    message: 'What is the last name of the new employee?',
+                    name: 'lastName',    
+                    },
+                    {
+                    type: 'list',
+                    message: 'What role do you want to assign to this employee?',
+                    name: 'roles',
+                    choices: roles[0],
+                    },
+                    {
+                    type: 'list',
+                    message: 'Who is this employees manager?',
+                    name: 'roles',
+                    choices: roles[0],
+                    },
+                ]) 
+            })   
             .then((data) => {
                 const query = `
                 INSERT INTO employee (firstName, lastName, roleId)
-                VALUES ("${data.firstName}", "${data.lastName}", "${data.roleId}")
+                VALUES ("${data.firstName}", "${data.lastName}", "${data.roles}")
                 `
-                db.query(query, function (err, results) {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        console.log(`${data.firstName} ${data.lastName} has been successfully added!`);
-                        resolve(results);
-                    };
-                });
+                return db.promise().query(query)
+            })
+            .then(() => {
+                console.log(`Employee has been successfully added!`)
+                resolve();
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject();
             });
         });
     };

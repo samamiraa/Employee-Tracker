@@ -38,20 +38,17 @@ function initializeApp() {
         })
         .then((data) => {
             if (data.options === 'View all departments') {
-                department.viewDepartments();
-                goBack()
+                return department.viewDepartments();
             } else if (data.options === 'View all roles') {
                 return role.viewRoles();
             } else if (data.options === 'View all employees') {
-                employee.viewEmployees();
-                goBack()
+                return employee.viewEmployees();
             } else if(data.options === 'Add a department') {
-                department.addDepartment();
-                goBack()
+                return department.addDepartment();
             } else if (data.options === 'Add a role') {
                 return role.addRole();
             } else if (data.options === 'Add an employee') {
-                employee.addEmployee();
+                return employee.addEmployee();
             } else if (data.options === 'Update an employee role') {
                 employee.updateEmployeeRole();
             } else if (data.options === 'Update employee manager') {
