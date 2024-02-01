@@ -56,7 +56,7 @@ function initializeDatabase() {
             } else if (data.options === 'View employees by manager') {
                 return employee.viewEmployeeByManager();
             } else if (data.options === 'View employees by department') {
-                viewDepartmentsEmployees();
+                return department.viewDepartmentsEmployees();
             } else if (data.options === 'Delete a role') {
                 deleteRole();
             } else if (data.options === 'Delete a department') {

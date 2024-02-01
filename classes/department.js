@@ -46,6 +46,50 @@ class Department {
             })
         })
     };
+
+    viewDepartmentsEmployees() {
+        return new Promise((resolve, reject) => {
+            let departments;
+
+            const departmentQuery = `
+                SELECT departmentName AS name, departmentId AS value
+                FROM department
+            `;
+
+            return db.promise().query(departmentQuery)
+            .then((departmentResult) =>{
+                departments = departmentResult[0];
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which departments team would you like to see?',
+                    name: 'departments',    
+                    choices: departments,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    SELECT employeeId AS employeeId, CONCAT(firstName, ' ', lastName) AS employeeName, role.roleTitle, role.roleSalary
+                    FROM employee 
+                    INNER JOIN role ON employee.roleId = role.roleId
+                    WHERE role.departmentId = ${data.departments}; 
+                `;
+
+                return db.promise().query(query);
+            })
+            .then((data) => {
+                console.table(data[0]);
+                resolve(data);
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            });
+        });
+    }
 };
 
 module.exports = Department;

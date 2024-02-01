@@ -221,7 +221,6 @@ class Employee {
             return db.promise().query(managerQuery)
             .then((managerResult) => {
                 managers = managerResult[0];
-                console.log(managers);
 
                 return inquirer.prompt([
                     {
