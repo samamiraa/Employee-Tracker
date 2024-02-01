@@ -57,11 +57,25 @@ class Employee {
                     type: 'input',
                     message: 'What is the first name of the new employee?',
                     name: 'firstName',
+                    validate: (input) => {
+                        if (!validator.isLength(input, { min: 1, max: 30})) {
+                            return 'First name must be 1 - 30 characters';
+                        } else {
+                             return true;
+                        };
+                    },
                     },
                     {
                     type: 'input',
                     message: 'What is the last name of the new employee?',
-                    name: 'lastName',    
+                    name: 'lastName', 
+                    validate: (input) => {
+                        if (!validator.isLength(input, { min: 1, max: 30})) {
+                            return 'Last name must be 1 - 30 characters';
+                        } else {
+                             return true;
+                        };
+                    },   
                     },
                     {
                     type: 'list',

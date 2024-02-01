@@ -28,6 +28,13 @@ class Department {
                 type: 'input',
                 message: 'What is the name of the department you would like to create?',
                 name: 'department',
+                validate: (input) => {
+                    if (!validator.isLength(input, { min: 1, max: 30})) {
+                        return 'Department name must be 1 - 30 characters';
+                    } else {
+                         return true;
+                    };
+                },
             }) 
             .then((data) => {
                 const query = `

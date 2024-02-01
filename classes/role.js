@@ -42,11 +42,25 @@ class Role {
                         type: 'input',
                         message: 'What is the title of the role you would like to create?',
                         name: 'roleTitle',
+                        validate: (input) => {
+                            if (!validator.isLength(input, { min: 1, max: 30})) {
+                                return 'Role Title must be 1 - 30 characters';
+                            } else {
+                                 return true;
+                            };
+                        },
                     },
                     {
                         type: 'input',
                         message: 'What is the annual salary of this new role?',
                         name: 'roleSalary',
+                        validate: (input) => {
+                            if (!validator.isDecimal(input)) {
+                                return 'Salary must be decimal number';
+                            } else {
+                                 return true;
+                            };
+                        },
                     },
                     {
                         type: 'list',
