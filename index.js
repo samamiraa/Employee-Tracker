@@ -62,7 +62,7 @@ function initializeDatabase() {
             } else if (data.options === 'Delete a department') {
                 return department.deleteDepartment();
             } else if (data.options === 'Delete an employee') {
-                deleteEmployee();
+                return employee.deleteEmployee();
             } else {
                 console.log('Diconnected from database');
                 process.exit();

@@ -253,6 +253,48 @@ class Employee {
             });
         });
     };
+
+    deleteEmployee() {
+        return new Promise ((resolve, reject) => {
+            let employees;
+
+            const employeesQuery = `
+                SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
+                FROM employee
+            `;
+
+            return db.promise().query(employeesQuery)
+            .then((employeesResult) => {
+                employees = employeesResult[0];
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which employee would you like to delete?',
+                    name: 'employees',    
+                    choices: employees,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    DELETE FROM employee
+                    WHERE employeeId = ${data.employees}
+                `;
+
+                return db.promise().query(query);
+            })
+            .then(() => {
+                console.log('Employee successfully deleted!')
+                resolve();
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            });
+        });
+    }
 };
 
 module.exports = Employee;
