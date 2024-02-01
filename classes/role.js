@@ -5,7 +5,7 @@ const inquirer = require('inquirer');
 const validator = require('validator');
 
 class Role {
-    constructor() {};
+    constructor() { };
 
     viewRoles() {
         return new Promise((resolve, reject) => {
@@ -26,52 +26,54 @@ class Role {
         });
     };
 
-    async addRole() {
-        try {
-            const departmentQuery = `
-                SELECT departmentName
-                FROM department
-            `;
-
-            const departmentNames = await db.promise().query(departmentQuery);
-
-            await inquirer.prompt([
-                {
-                type: 'input',
-                message: 'What is the title of the role you would like to create?',
-                name: 'roleTitle',
-                },
-                {
-                type: 'input',
-                message: 'What is the annual salary of this new role?',
-                name: 'roleSalary',    
-                },
-                {
-                type: 'list',
-                message: 'What department does this role belong to?',
-                name: 'department',
-                choices: departmentNames,  
-                },
-            ]);
-            
-            const departmentIdQuery = `
-            SELECT departmentId
+    addRole() {
+        return new Promise ((resolve, reject) => {
+        const departmentQuery = `
+            SELECT departmentName AS name, departmentId AS value
             FROM department
-            WHERE departmentName = '${departmentChoices.departmentName}'
-            `;
+        `;
 
-            const departmentData = await db.promise().query(departmentIdQuery);
-            const addRoleQuery = `
+        return db.promise().query(departmentQuery)
+            .then(departments => {
+            console.log(departments);
+
+            return inquirer
+                .prompt([
+                    {
+                        type: 'input',
+                        message: 'What is the title of the role you would like to create?',
+                        name: 'roleTitle',
+                    },
+                    {
+                        type: 'input',
+                        message: 'What is the annual salary of this new role?',
+                        name: 'roleSalary',
+                    },
+                    {
+                        type: 'list',
+                        message: 'What department does this role belong to?',
+                        name: 'department',
+                        choices: departments[0],
+                    },
+                ])
+            })
+            .then((data) => {
+                const addRoleQuery = `
                 INSERT INTO role (roleTitle, roleSalary, departmentId)
-                VALUES ("${data.roleTitle}", "${data.roleSalary}", "${departmentData[0].departmentId}")
+                VALUES ("${data.roleTitle}", "${data.roleSalary}", "${data.department}")
                 `;
+                return db.promise().query(addRoleQuery)
+            })
+            .then(() => {
+                console.log(`Role has been successfully added!`)
+                resolve();
+            })
 
-            await db.promise().query(addRoleQuery);
-            console.log(`${data.roleTitle} has been successfully added!`)
-
-        } catch (err) {
-            console.error(err);
-        };
+            .catch((err) => {
+                console.error(err);
+                reject();
+            });
+        });
     };
 };
 

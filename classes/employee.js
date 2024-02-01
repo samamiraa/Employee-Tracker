@@ -11,9 +11,11 @@ class Employee {
     viewEmployees() {
         return new Promise((resolve, reject) => {
             const query = `
-                SELECT employee.employeeId, employee.firstName, employee.lastName, role.roleTitle, role.roleSalary
+                SELECT employee.employeeId, employee.firstName, employee.lastName, role.roleTitle, role.roleSalary, department.departmentName, CONCAT(manager.firstName, ' ', manager.lastName) AS manager
                 FROM employee
-                INNER JOIN role ON employee.roleId = role.roleId;
+                INNER JOIN role ON employee.roleId = role.roleId
+                INNER JOIN department ON role.departmentId = department.departmentId
+                INNER JOIN employee manager ON manager.employeeId = employee.managerId;
             `
             db.query(query, function (err, results) {
                 if (err) {

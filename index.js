@@ -38,19 +38,22 @@ function initializeApp() {
         })
         .then((data) => {
             if (data.options === 'View all departments') {
-                return department.viewDepartments();
+                department.viewDepartments();
+                goBack()
             } else if (data.options === 'View all roles') {
                 return role.viewRoles();
             } else if (data.options === 'View all employees') {
-                return employee.viewEmployees();
+                employee.viewEmployees();
+                goBack()
             } else if(data.options === 'Add a department') {
-                return department.addDepartment();
+                department.addDepartment();
+                goBack()
             } else if (data.options === 'Add a role') {
                 return role.addRole();
             } else if (data.options === 'Add an employee') {
-                return employee.addEmployee();
+                employee.addEmployee();
             } else if (data.options === 'Update an employee role') {
-                return employee.updateEmployeeRole();
+                employee.updateEmployeeRole();
             } else if (data.options === 'Update employee manager') {
                 updateEmployeeManager();
             } else if (data.options === 'View employees by manager') {
@@ -69,7 +72,7 @@ function initializeApp() {
             };
         })
         .then(() => {
-            return goBack();
+            goBack();
         })
         .catch((err) => {
             console.error(err);
