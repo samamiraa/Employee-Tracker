@@ -43,6 +43,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/swi
 https://stackoverflow.com/questions/5266152/how-to-exit-in-node-js
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 https://www.w3schools.com/sql/sql_union.asp
+https://www.w3schools.com/sql/sql_distinct.asp
 
 ## License
 

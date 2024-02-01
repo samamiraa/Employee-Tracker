@@ -150,7 +150,6 @@ class Employee {
             });
     };
 
-    //* manager list contains multiple
     updateEmployeeManager() {
         return new Promise((resolve, reject) => {
             let managers;
@@ -162,7 +161,7 @@ class Employee {
                 `;
 
             const managerQuery = `
-                SELECT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
+                SELECT DISTINCT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
                 FROM employee
                 LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
             `
@@ -207,6 +206,53 @@ class Employee {
 
         });
 
+    };
+
+    viewEmployeeByManager() {
+        return new Promise((resolve, reject) => {
+            let managers;
+
+            const managerQuery = `
+                SELECT DISTINCT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
+                FROM employee
+                LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
+            `;
+
+            return db.promise().query(managerQuery)
+            .then((managerResult) => {
+                managers = managerResult[0];
+                console.log(managers);
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which managers team would you like to see?',
+                    name: 'managers',    
+                    choices: managers,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    SELECT employeeId AS employeeId, CONCAT(firstName, ' ', lastName) AS employeeName, role.roleTitle, role.roleSalary, department.departmentName
+                    FROM employee 
+                    INNER JOIN role ON employee.roleId = role.roleId
+                    INNER JOIN department ON role.departmentId = department.departmentId
+                    WHERE managerId = ${data.managers} OR managerId IS null;
+                `
+
+                return db.promise().query(query);
+            })
+            .then((data) => {
+                console.table(data[0]);
+                resolve(data);
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            });
+        });
     };
 };
 

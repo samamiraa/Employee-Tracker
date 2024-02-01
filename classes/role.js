@@ -35,7 +35,6 @@ class Role {
 
         return db.promise().query(departmentQuery)
             .then(departments => {
-            console.log(departments);
 
             return inquirer
                 .prompt([

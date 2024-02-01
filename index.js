@@ -28,7 +28,7 @@ const listOptions = [
     'Exit'
 ];
 
-function initializeApp() {
+function initializeDatabase() {
        inquirer
        .prompt({
             type: 'list',
@@ -54,7 +54,7 @@ function initializeApp() {
             } else if (data.options === 'Update employee manager') {
                 return employee.updateEmployeeManager();
             } else if (data.options === 'View employees by manager') {
-                viewEmployeeByManager();
+                return employee.viewEmployeeByManager();
             } else if (data.options === 'View employees by department') {
                 viewDepartmentsEmployees();
             } else if (data.options === 'Delete a role') {
@@ -89,7 +89,7 @@ function goBack() {
         })
         .then((data) => {
             if (data.back === 'Back') {
-                initializeApp();
+                initializeDatabase();
             } else {
                 console.log('Diconnected from database');
                 process.exit();
@@ -97,6 +97,6 @@ function goBack() {
         });
 };
 
-initializeApp();
+initializeDatabase();
 
 
