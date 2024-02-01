@@ -131,7 +131,51 @@ class Department {
                 reject(err);
             });
         });
-    }
+    };
+
+    viewBudget() {
+        return new Promise ((resolve, reject) => {
+            let departments;
+
+            const departmentsQuery = `
+                SELECT departmentName AS name, departmentId AS value
+                FROM department
+            `;
+
+            return db.promise().query(departmentsQuery)
+            .then((departmentsResult) => {
+                departments = departmentsResult[0];
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which departments budget would you like to view?',
+                    name: 'departments',    
+                    choices: departments,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    SELECT SUM(role.roleSalary) as totalBudget
+                    FROM role
+                    INNER JOIN department ON role.departmentId = department.departmentId
+                    WHERE department.departmentId = ${data.departments};
+                `;
+
+                return db.promise().query(query)
+                .then((data) => {
+                    console.table(data[0]);
+                    resolve();
+                })
+    
+                .catch((err) => {
+                    console.error(err);
+                    reject(err);
+                });
+            })
+        });
+    };
 };
 
 module.exports = Department;

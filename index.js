@@ -25,6 +25,7 @@ const listOptions = [
     'Delete a role',
     'Delete a department',
     'Delete an employee',
+    'View Department budget',
     'Exit'
 ];
 
@@ -63,6 +64,8 @@ function initializeDatabase() {
                 return department.deleteDepartment();
             } else if (data.options === 'Delete an employee') {
                 return employee.deleteEmployee();
+            } else if (data.options === 'View Department budget') {
+                return department.viewBudget();
             } else {
                 console.log('Diconnected from database');
                 process.exit();
