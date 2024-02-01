@@ -73,6 +73,49 @@ class Role {
             });
         });
     };
+
+    deleteRole() {
+        return new Promise ((resolve, reject) => {
+            let roles;
+
+            const rolesQuery = `
+                SELECT roleTitle AS name, roleId AS value
+                FROM role
+            `;
+
+            return db.promise().query(rolesQuery)
+            .then((rolesResult) => {
+                roles = rolesResult[0];
+                console.log(roles)
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which role would you like to delete?',
+                    name: 'roles',    
+                    choices: roles,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    DELETE FROM role
+                    WHERE roleId = ${data.roles}
+                `;
+
+                return db.promise().query(query);
+            })
+            .then(() => {
+                console.log('Role successfully deleted!')
+                resolve();
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            });
+        });
+    }
 };
 
 module.exports = Role;
