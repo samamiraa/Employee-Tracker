@@ -14,15 +14,15 @@ class Role {
                 FROM role
                 INNER JOIN department ON role.departmentId = department.departmentId;
             `
-            db.query(query, function (err, results) {
-                if (err) {
+            return db.promise().query(query)
+                .then((data) => {
+                    console.table(data[0]);
+                    resolve();
+                })
+                .catch((err) => {
                     console.error(err);
                     reject(err);
-                } else {
-                    console.table(results);
-                    resolve(results);
-                };
-            });
+                })
         });
     };
 
@@ -68,7 +68,6 @@ class Role {
                 console.log(`Role has been successfully added!`)
                 resolve();
             })
-
             .catch((err) => {
                 console.error(err);
                 reject();

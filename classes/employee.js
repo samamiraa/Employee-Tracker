@@ -7,7 +7,6 @@ const validator = require('validator');
 class Employee {
     constructor() {};
 
-    //! not getting all employees
     viewEmployees() {
         return new Promise((resolve, reject) => {
             const query = `
@@ -15,17 +14,17 @@ class Employee {
                 FROM employee
                 INNER JOIN role ON employee.roleId = role.roleId
                 INNER JOIN department ON role.departmentId = department.departmentId
-                INNER JOIN employee manager ON manager.employeeId = employee.managerId;
+                LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
             `
-            db.query(query, function (err, results) {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                console.table(results);
-                resolve(results);
-                };
-            });
+            return db.promise().query(query)
+            .then((data) => {
+                console.table(data[0]);
+                resolve();
+            })
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+            })
         });
     };
 

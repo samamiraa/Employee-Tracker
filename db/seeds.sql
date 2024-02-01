@@ -21,54 +21,52 @@ VALUES  (1, "Cashier", 30000.00, 1),
 INSERT INTO employee (employeeId, firstName, lastName, roleId)
 VALUES  (1, "Ricardo", "Larkin", 1),
         (2, "Courtney", "Powlowski", 1),
-        (3, "Rex", "Mohr", 1),
-        (4, "Shyanne", "Weimann", 2),
+        (3, "Rex", "Mohr", 2),
+        (4, "Shyanne", "Weimann", 3),
         (5, "Donna", "Veum", 3),
-        (6, "Dillan", "Lueilwitz", 3),
-        (7, "Nia", "Collins", 3),
-        (8, "Carlos", "Windler", 4),
-        (9, "Windler", "Senger", 4),
-        (10, "Jovani", "Nader", 5),
-        (11, "Derek", "Conroy", 6),
-        (12, "Deron", "Koelpin", 6),
-        (13, "Eve", "McGlynn", 6),
-        (14, "Doug", "Mante", 7),
-        (15, "Lottie", "Feest", 8),
-        (16, "Bernie", "Blanda", 8),
-        (17, "Marques", "Volkman", 8),
-        (18, "Hardy", "Feeney", 9),
-        (19, "Peggie", "Kemmer", 10),
-        (20, "Adele", "Swaniawski", 10),
-        (21, "Bailee", "Metz", 10),
-        (22, "Levi", "Ankunding", 11);
+        (6, "Dillan", "Lueilwitz", 4),
+        (7, "Nia", "Collins", 5),
+        (8, "Carlos", "Windler", 6),
+        (9, "Windler", "Senger", 6),
+        (10, "Jovani", "Nader", 7),
+        (11, "Derek", "Conroy", 8),
+        (12, "Deron", "Koelpin", 8),
+        (13, "Eve", "McGlynn", 9),
+        (14, "Doug", "Mante", 10),
+        (15, "Lottie", "Feest", 10),
+        (16, "Bernie", "Blanda", 11);
 
 UPDATE employee
-SET managerId = 4
+SET managerId = 3
 WHERE roleId = 1;
 
 UPDATE employee
-SET managerId = 10
+SET managerId = 5
 WHERE roleId = 3;
 
 UPDATE employee
-SET managerId = 10
+SET managerId = 5
 WHERE roleId = 4;
 
 UPDATE employee
-SET managerId = 14
+SET managerId = 10
 WHERE roleId = 6;
 
 UPDATE employee
-SET managerId = 18
+SET managerId = 13
 WHERE roleId = 8;
 
 UPDATE employee
-SET managerId = 22
+SET managerId = 16
 WHERE roleId = 10;
 
 UPDATE employee
 SET managerId = NULL
-WHERE employeeId = 4;
+WHERE employeeId = 3;
+
+UPDATE employee
+SET managerId = NULL
+WHERE employeeId = 7;
 
 UPDATE employee
 SET managerId = NULL
@@ -76,12 +74,8 @@ WHERE employeeId = 10;
 
 UPDATE employee
 SET managerId = NULL
-WHERE employeeId = 14;
+WHERE employeeId = 13;
 
 UPDATE employee
 SET managerId = NULL
-WHERE employeeId = 18;
-
-UPDATE employee
-SET managerId = NULL
-WHERE employeeId = 22;
+WHERE employeeId = 16;
