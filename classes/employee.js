@@ -96,7 +96,6 @@ class Employee {
         });
     };
 
-    //!need to fix
     updateEmployeeRole() {
         return new Promise((resolve, reject) => {
             let roles;
@@ -149,6 +148,65 @@ class Employee {
                     reject();
                 });
             });
+    };
+
+    //* manager list contains multiple
+    updateEmployeeManager() {
+        return new Promise((resolve, reject) => {
+            let managers;
+            let employees;
+
+            const employeeQuery = `
+                SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
+                FROM employee
+                `;
+
+            const managerQuery = `
+                SELECT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
+                FROM employee
+                LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
+            `
+            return Promise.all([db.promise().query(employeeQuery), db.promise().query(managerQuery)])
+            .then(([employeeResult, managerResult]) => {
+                employees = employeeResult[0];
+                managers = managerResult[0];
+
+                return inquirer.prompt([
+                    {
+                    type: 'list',
+                    message: 'Which employee needs to update their current manager?',
+                    name: 'employees',
+                    choices: employees,
+                    },
+                    {
+                    type: 'list',
+                    message: 'Who is their new manager?',
+                    name: 'managers',    
+                    choices: managers,
+                    },
+                ]) 
+            })
+            .then((data) => {
+                const query = `
+                    UPDATE employee
+                    SET managerId = ${data.managers}
+                    WHERE employeeId = ${data.employees};
+                `
+
+                return db.promise().query(query);
+            })
+            .then(() => {
+                console.log(`Employee manager has been successfully updated!`)
+                resolve();
+            })
+
+            .catch((err) => {
+                console.error(err);
+                reject();
+            });
+
+        });
+
     };
 };
 

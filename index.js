@@ -52,7 +52,7 @@ function initializeApp() {
             } else if (data.options === 'Update an employee role') {
                 return employee.updateEmployeeRole();
             } else if (data.options === 'Update employee manager') {
-                updateEmployeeManager();
+                return employee.updateEmployeeManager();
             } else if (data.options === 'View employees by manager') {
                 viewEmployeeByManager();
             } else if (data.options === 'View employees by department') {
