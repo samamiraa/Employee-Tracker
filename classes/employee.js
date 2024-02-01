@@ -99,58 +99,57 @@ class Employee {
     //!need to fix
     updateEmployeeRole() {
         return new Promise((resolve, reject) => {
-            let employeeNames = `
-                SELECT firstName, lastName
+            let roles;
+            let employees;
+
+            const employeeNames = `
+                SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
                 FROM employee
             `;
 
-            let roleTitles = `
-                SELECT roleTitle
+            const roleTitles = `
+                SELECT roleTitle AS name, roleId AS value
                 FROM role
             `
-            db.query(employeeNames, function(err, results) {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
+            return Promise.all([db.promise().query(employeeNames), db.promise().query(roleTitles)])
+                .then(([employeeResult, rolesResult]) => {
+                    roles = rolesResult[0];
+                    employees = employeeResult[0];
 
-                    let employeeChoices = results.map(employee => `${employee.firstName} ${employee.lastName}`);
-                    let roleChoices = results.map(role => `${role.roleTitle}`);
-
-                    inquirer.prompt([
+                    return inquirer.prompt([
                         {
                         type: 'list',
                         message: 'Which employee is switching roles?',
-                        name: 'names',
-                        choices: employeeChoices,
+                        name: 'employees',
+                        choices: employees,
                         },
                         {
                         type: 'list',
                         message: 'What is the new role for this employee?',
-                        name: 'role',    
-                        choices: roleChoices,
+                        name: 'roles',    
+                        choices: roles,
                         },
                     ]) 
-                    .then((data) => {
-                        const query = `
-                        UPDATE employee 
-                        SET roleId = ${data.roleId}
-                        WHERE lastName = "${data.lastName}";
-                        `
-                        db.query(query, function (err, results) {
-                            if (err) {
-                                console.error(err);
-                                reject(err);
-                            } else {
-                                console.log(`${data.lastName} role has been successfully updated!`);
-                                resolve(results);
-                            };
-                        });
-                    })
-                };
-            })
-        });
-    }
+                })
+                .then((data) => {
+                    const query = `
+                    UPDATE employee 
+                    SET roleId = ${data.roles}
+                    WHERE employeeId = "${data.employees}";
+                    `
+                    return db.promise().query(query);
+                })
+                .then(() => {
+                    console.log(`Employee role has been successfully updated!`)
+                    resolve();
+                })
+    
+                .catch((err) => {
+                    console.error(err);
+                    reject();
+                });
+            });
+    };
 };
 
 module.exports = Employee;
