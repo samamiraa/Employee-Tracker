@@ -28,21 +28,28 @@ class Employee {
         });
     };
 
-    //!need to add who employee manager is 
     addEmployee() {
         return new Promise((resolve, reject) => {
+            let roles;
+            let managers;
+
             const roleQuery = `
                 SELECT roleTitle AS name, roleId AS value
                 FROM role
             `
 
-            const rmanagerQuery = `
-            SELECT roleTitle AS name, roleId AS value
-            FROM role
-        `
-        return db.promise().query(roleQuery)
-            .then(roles => {
-            console.log(roles);
+            const managerQuery = `
+                SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
+                FROM employee
+                WHERE managerId IS NULL
+                UNION
+                SELECT 'None' AS name, null AS value;
+            `;
+
+        return Promise.all([db.promise().query(roleQuery), db.promise().query(managerQuery)])
+            .then(([rolesResult, managerResult]) => {
+            roles = rolesResult[0];
+            managers = managerResult[0];
 
             return inquirer
                 .prompt([
@@ -60,20 +67,20 @@ class Employee {
                     type: 'list',
                     message: 'What role do you want to assign to this employee?',
                     name: 'roles',
-                    choices: roles[0],
+                    choices: roles,
                     },
                     {
                     type: 'list',
                     message: 'Who is this employees manager?',
-                    name: 'roles',
-                    choices: roles[0],
+                    name: 'manager',
+                    choices: managers,
                     },
                 ]) 
             })   
             .then((data) => {
                 const query = `
-                INSERT INTO employee (firstName, lastName, roleId)
-                VALUES ("${data.firstName}", "${data.lastName}", "${data.roles}")
+                INSERT INTO employee (firstName, lastName, roleId, managerId)
+                VALUES ("${data.firstName}", "${data.lastName}", "${data.roles}", ${data.manager})
                 `
                 return db.promise().query(query)
             })
