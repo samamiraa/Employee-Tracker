@@ -195,21 +195,25 @@ class Employee {
             let managers;
             let employees;
 
+            //* SQL syntax to get employee naame and id
             const employeeQuery = `
                 SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
                 FROM employee
                 `;
-
+            
+            //* SQL syntax to get manager name and employee id
             const managerQuery = `
                 SELECT DISTINCT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
                 FROM employee
                 LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
             `
+             //*performs all queries at once before proceeding to inquirer prompt
             return Promise.all([db.promise().query(employeeQuery), db.promise().query(managerQuery)])
             .then(([employeeResult, managerResult]) => {
                 employees = employeeResult[0];
                 managers = managerResult[0];
 
+                //* prompts user which employee needs their manager updated, then who they want as the new manager
                 return inquirer.prompt([
                     {
                     type: 'list',
@@ -226,6 +230,7 @@ class Employee {
                 ]) 
             })
             .then((data) => {
+                //* SQL syntax to update employee manager
                 const query = `
                     UPDATE employee
                     SET managerId = ${data.managers}
@@ -234,11 +239,12 @@ class Employee {
 
                 return db.promise().query(query);
             })
+            //* confirmation message success
             .then(() => {
                 console.log(`Employee manager has been successfully updated!`)
                 resolve();
             })
-
+            //* displays error if any
             .catch((err) => {
                 console.error(err);
                 reject();
@@ -252,16 +258,19 @@ class Employee {
         return new Promise((resolve, reject) => {
             let managers;
 
+            //* SQL syntax to get all current employees who are managers
             const managerQuery = `
                 SELECT DISTINCT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
                 FROM employee
                 INNER JOIN employee manager ON manager.employeeId = employee.managerId;
             `;
 
+            //* executes query to SQL database
             return db.promise().query(managerQuery)
             .then((managerResult) => {
                 managers = managerResult[0];
 
+                //* prompts user to choose from list of current managers
                 return inquirer.prompt([
                     {
                     type: 'list',
@@ -272,6 +281,7 @@ class Employee {
                 ]) 
             })
             .then((data) => {
+                //* SQL syntax to get employee 
                 const query = `
                     SELECT employeeId AS employeeId, CONCAT(firstName, ' ', lastName) AS employeeName, role.roleTitle, role.roleSalary, department.departmentName
                     FROM employee 
@@ -279,13 +289,15 @@ class Employee {
                     INNER JOIN department ON role.departmentId = department.departmentId
                     WHERE managerId = ${data.managers} ;
                 `
+                //* executes query to SQL database
                 return db.promise().query(query);
             })
             .then((data) => {
+                //* displays employee information in console
                 console.table(data[0]);
                 resolve(data);
             })
-
+            //* displays error if any 
             .catch((err) => {
                 console.error(err);
                 reject(err);
@@ -297,15 +309,18 @@ class Employee {
         return new Promise ((resolve, reject) => {
             let employees;
 
+            //* SQL syntax to get employee info 
             const employeesQuery = `
                 SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
                 FROM employee
             `;
 
+            //* executes query to SQL database
             return db.promise().query(employeesQuery)
             .then((employeesResult) => {
                 employees = employeesResult[0];
 
+                //* prompts use to choose from list of employees
                 return inquirer.prompt([
                     {
                     type: 'list',
@@ -316,18 +331,21 @@ class Employee {
                 ]) 
             })
             .then((data) => {
+                //*SQL syntax to delete selected employee
                 const query = `
                     DELETE FROM employee
                     WHERE employeeId = ${data.employees}
                 `;
 
+                //* executes query to SQL database
                 return db.promise().query(query);
             })
             .then(() => {
+                //* confirmation message success
                 console.log('Employee successfully deleted!')
                 resolve();
             })
-
+            //*displays error if any
             .catch((err) => {
                 console.error(err);
                 reject(err);
@@ -336,4 +354,5 @@ class Employee {
     }
 };
 
+//* exports class
 module.exports = Employee;
