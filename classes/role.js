@@ -114,7 +114,6 @@ class Role {
             return db.promise().query(rolesQuery)
             .then((rolesResult) => {
                 roles = rolesResult[0];
-                console.log(roles)
 
                 //* prompts user for role to be deleted
                 return inquirer.prompt([
