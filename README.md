@@ -1,6 +1,6 @@
 # Employee-Tracker
 
-Walkthrough Video Link 👇🏼
+Walkthrough Video Link 👇🏼<br>
 https://drive.google.com/file/d/1_nXz3fz0HSW-hoqIAv-kNhLfSFv0drCm/view?usp=sharing
 
 ## Description
