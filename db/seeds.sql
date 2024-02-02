@@ -1,3 +1,4 @@
+/*inserts data into corresponding columns*/
 INSERT INTO department (departmentId, departmentName)
 VALUES  (1, "Sales"),
         (2, "Deli"),
@@ -36,6 +37,7 @@ VALUES  (1, "Ricardo", "Larkin", 1),
         (15, "Lottie", "Feest", 10),
         (16, "Bernie", "Blanda", 11);
 
+/*adds manager ids to employee table, employees needed to be added first before managerIds*/
 UPDATE employee
 SET managerId = 3
 WHERE roleId = 1;

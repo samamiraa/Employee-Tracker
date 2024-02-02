@@ -1,8 +1,12 @@
+/* deletes database if exist already*/
 DROP DATABASE IF EXISTS company_db;
+/*creates database*/
 CREATE DATABASE company_db;
 
+/*makes it so this database is being used*/
 USE company_db;
 
+/*creates tables with defined properties, creates links between tables using keys*/
 CREATE TABLE department (
     departmentId INT NOT NULL AUTO_INCREMENT,
     departmentName VARCHAR(30) NOT NULL,

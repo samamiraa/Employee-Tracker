@@ -1,14 +1,19 @@
+//* imports dependancies
 const db = require('../assets/server.js');
 const mysql = require('mysql2');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
 const validator = require('validator');
 
+//* class that contains functions related to employees
 class Employee {
     constructor() {};
 
+    //* function to view all employees
     viewEmployees() {
         return new Promise((resolve, reject) => {
+            //* SQL syntax to get employee info from employee table, role info from role table, department info from department table using join functions
+            //* made possible by primary & foreign keys defined in schema
             const query = `
                 SELECT employee.employeeId, employee.firstName, employee.lastName, role.roleTitle, role.roleSalary, department.departmentName, CONCAT(manager.firstName, ' ', manager.lastName) AS manager
                 FROM employee
@@ -16,11 +21,15 @@ class Employee {
                 INNER JOIN department ON role.departmentId = department.departmentId
                 LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
             `
+            //* makes query to SQL database
             return db.promise().query(query)
             .then((data) => {
+                //* displays info rec'd from database
                 console.table(data[0]);
+                //* resolves promise
                 resolve();
             })
+            //* catches errors and displays if any
             .catch((err) => {
                 console.error(err);
                 reject(err);
@@ -33,11 +42,13 @@ class Employee {
             let roles;
             let managers;
 
+            //* SQL syntax to get role info from role table
             const roleQuery = `
                 SELECT roleTitle AS name, roleId AS value
                 FROM role
             `
 
+            //* SQL syntax to get all current employees who are managers
             const managerQuery = `
                 SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
                 FROM employee
@@ -46,11 +57,14 @@ class Employee {
                 SELECT 'None' AS name, null AS value;
             `;
 
+            //* performs both queries at once before proceeding to inquirer prompt
         return Promise.all([db.promise().query(roleQuery), db.promise().query(managerQuery)])
             .then(([rolesResult, managerResult]) => {
+            //* sets variables value as data rec'd from database
             roles = rolesResult[0];
             managers = managerResult[0];
 
+            //* prompts user for new employee info
             return inquirer
                 .prompt([
                     {
@@ -58,6 +72,7 @@ class Employee {
                     message: 'What is the first name of the new employee?',
                     name: 'firstName',
                     validate: (input) => {
+                        //* checks user input for characyer length
                         if (!validator.isLength(input, { min: 1, max: 30})) {
                             return 'First name must be 1 - 30 characters';
                         } else {
@@ -78,12 +93,14 @@ class Employee {
                     },   
                     },
                     {
+                    //* displays list of roles as options rec'd from role info query
                     type: 'list',
                     message: 'What role do you want to assign to this employee?',
                     name: 'roles',
                     choices: roles,
                     },
                     {
+                    //* displays list of current managers as options from manager info query 
                     type: 'list',
                     message: 'Who is this employees manager?',
                     name: 'manager',
@@ -92,6 +109,7 @@ class Employee {
                 ]) 
             })   
             .then((data) => {
+                //* SQL syntax to insert employee info from user input to database
                 const query = `
                 INSERT INTO employee (firstName, lastName, roleId, managerId)
                 VALUES ("${data.firstName}", "${data.lastName}", "${data.roles}", ${data.manager})
@@ -99,10 +117,11 @@ class Employee {
                 return db.promise().query(query)
             })
             .then(() => {
+                //* confirmation message add employee successful
                 console.log(`Employee has been successfully added!`)
                 resolve();
             })
-
+            //* displays error if any
             .catch((err) => {
                 console.error(err);
                 reject();
@@ -115,20 +134,25 @@ class Employee {
             let roles;
             let employees;
 
+            //* SQL syntax to get employee name and id
             const employeeNames = `
                 SELECT CONCAT(firstName, ' ', lastName) AS name, employeeId AS value
                 FROM employee
             `;
 
+            //* SQL syntax to get role title and id
             const roleTitles = `
                 SELECT roleTitle AS name, roleId AS value
                 FROM role
             `
+            //*performs all queries at once before proceeding to inquirer prompt
             return Promise.all([db.promise().query(employeeNames), db.promise().query(roleTitles)])
                 .then(([employeeResult, rolesResult]) => {
+                    //* sets variables value as data rec'd from database
                     roles = rolesResult[0];
                     employees = employeeResult[0];
 
+                    //* prompts user for new employee role with choices from sql queries
                     return inquirer.prompt([
                         {
                         type: 'list',
@@ -145,6 +169,7 @@ class Employee {
                     ]) 
                 })
                 .then((data) => {
+                    //* SQL syntax to update employee role
                     const query = `
                     UPDATE employee 
                     SET roleId = ${data.roles}
@@ -153,10 +178,11 @@ class Employee {
                     return db.promise().query(query);
                 })
                 .then(() => {
+                    //* confirmation message employee role update successful
                     console.log(`Employee role has been successfully updated!`)
                     resolve();
                 })
-    
+                //* displays error if any
                 .catch((err) => {
                     console.error(err);
                     reject();
@@ -229,7 +255,7 @@ class Employee {
             const managerQuery = `
                 SELECT DISTINCT CONCAT(manager.firstName, ' ', manager.lastName) AS name, manager.employeeId AS value
                 FROM employee
-                LEFT JOIN employee manager ON manager.employeeId = employee.managerId;
+                INNER JOIN employee manager ON manager.employeeId = employee.managerId;
             `;
 
             return db.promise().query(managerQuery)
@@ -251,9 +277,8 @@ class Employee {
                     FROM employee 
                     INNER JOIN role ON employee.roleId = role.roleId
                     INNER JOIN department ON role.departmentId = department.departmentId
-                    WHERE managerId = ${data.managers} OR managerId IS null;
+                    WHERE managerId = ${data.managers} ;
                 `
-
                 return db.promise().query(query);
             })
             .then((data) => {

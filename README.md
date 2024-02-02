@@ -4,7 +4,7 @@ Walkthrough Video Link 👇🏼
 
 ## Description
 
-Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
+This is an employee tracker connected to the mySQL database. My motivation wanting to understand how asynchronous code works and why it would be used. I built this to have an understanding of not only SQL, but how to connect it to node. This allows coordination and organization of data. I learned 
 
 - What was your motivation?
 - Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
@@ -22,7 +22,8 @@ Provide a short description explaining the what, why, and how of your project. U
 
 NPM install inquirer@8.2.4<br>
 NPM install mysql2<br>
-NPM install validator
+NPM install validator<br>
+NPM console.table
 
 ## Usage
 
@@ -36,6 +37,8 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 
 ## Credits
 
+I always refer to the class activities for guidance, but thank you to my colleagues Max and Shawn for answering some questions regarding asynchronous portion. Thank you to Rudie, the askBCS learning assistand for helping me debug a few things. And of course, thank you to my tutor Andrew who helped me untangle the mess I created at one point.
+
 https://www.w3schools.com/sql/sql_update.asp
 https://www.w3schools.com/sql/sql_datatypes.asp
 https://www.w3schools.com/js/js_errors.asp
@@ -45,6 +48,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 https://www.w3schools.com/sql/sql_union.asp
 https://www.w3schools.com/sql/sql_distinct.asp
 https://www.w3schools.com/sql/sql_sum.asp
+https://www.w3schools.com/sql/sql_or.asp
 
 ## License
 
@@ -64,4 +68,4 @@ N/A
 
 ## Tests
 
-Go the extra mile and write tests for your application. 
+NPM install all required packages. Write 'node index.js' to connect to database. Explore each option!

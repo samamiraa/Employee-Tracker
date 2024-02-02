@@ -1,16 +1,20 @@
+//* importing dependancies
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const cTable = require('console.table');
 
+//* importing classes
 const db = require('./assets/server.js');
 const Department = require('./classes/department.js');
 const Employee = require('./classes/employee.js');
 const Role = require('./classes/role.js');
 
+//* variables for new classes
 let department = new Department;
 let role = new Role;
 let employee = new Employee;
 
+//* inquirer list option choices
 const listOptions = [
     'View all departments',
     'View all roles',
@@ -29,7 +33,9 @@ const listOptions = [
     'Exit'
 ];
 
+//* function to invoke database application
 function initializeDatabase() {
+    //* inquirer initial prompt  
        inquirer
        .prompt({
             type: 'list',
@@ -37,6 +43,7 @@ function initializeDatabase() {
             name: 'options',
             choices: listOptions,
         })
+        //* if statement that calls a function from each class depending on user selection from prompt
         .then((data) => {
             if (data.options === 'View all departments') {
                 return department.viewDepartments();
@@ -71,15 +78,18 @@ function initializeDatabase() {
                 process.exit();
             };
         })
+        //* gives option to go back to main menu or exit
         .then(() => {
             goBack();
         })
+        //* catches error if any
         .catch((err) => {
             console.error(err);
         })
 };
 
 function goBack() {
+    //* prompts user to go back to main menu or exit
     inquirer
     .prompt({
         type: 'list',
@@ -91,6 +101,7 @@ function goBack() {
         ],
         })
         .then((data) => {
+            //* either calls function to go back to main menu or exits depending on user selection
             if (data.back === 'Back') {
                 initializeDatabase();
             } else {
@@ -100,6 +111,7 @@ function goBack() {
         });
 };
 
+//* calls function to start database application
 initializeDatabase();
 
 
